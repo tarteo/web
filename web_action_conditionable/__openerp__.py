@@ -14,9 +14,7 @@
     'data': [
         'views/view.xml'
     ],
-    "author": "Cristian Salamea,"
-              "Noviat,"
-              "Onestein,"
+    "author": "Cristian Salamea,Onestein,"
               "Odoo Community Association (OCA)",
     "installable": True,
 }
