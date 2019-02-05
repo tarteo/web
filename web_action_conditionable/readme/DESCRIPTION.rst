@@ -1,4 +1,4 @@
-This module was written to extend the functionality of actions in tree views.
+This module was written to extend the functionality of actions in form and tree views.
 Odoo by default support:
 
 ::
@@ -9,12 +9,9 @@ with this module you can do:
 
 ::
 
-   <tree delete="state=='draft'">
+   <tree delete=_context.myContextValue == 'myValue' and 'base.group_sale_manager' in _group_refs">
 
-you can use `_group_refs` to make a condition based on the user's groups:
-
-::
-
-   <tree delete="'base.group_user' in _group_refs">
+where `_group_refs` contains the groups of the user
+and _context holds the values in the context.
 
 It works in any tree view, so you can use it in One2many.

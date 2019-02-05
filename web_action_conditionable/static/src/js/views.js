@@ -13,11 +13,20 @@ openerp.web_action_conditionable = function (instance) {
                 } catch(error) {
                     var expr = attrs[action];
                     var expression = py.parse(py.tokenize(expr));
-                    var cxt = this.dataset.get_context().__eval_context;
-                    cxt = cxt ? cxt.__contexts[1] : {};
-                    cxt['_group_refs'] = instance.session.group_refs;
+                    var ctx = {};
+                    ctx['_group_refs'] = instance.session.group_refs;
 
-                    return py.evaluate(expression, cxt).toJSON();
+                    // Normal views
+                    if (!this.dataset.context.__ref && !this.dataset.parent_view) {
+                        ctx['_context'] = this.dataset.context;
+                    }
+                    // Nested views
+                    else if (py.tokenize(this.dataset.context.__contexts[0]).length > 1) {
+                        var view_ctx = this.dataset.context.__eval_context;
+                        view_ctx = view_ctx ? view_ctx.__contexts[1] : {};
+                        ctx['_context'] = py.evaluate(py.parse(py.tokenize(this.dataset.context.__contexts[0])), view_ctx).toJSON();
+                    }
+                    return py.evaluate(expression, ctx).toJSON();
                 }
             } else {
                 return true;
