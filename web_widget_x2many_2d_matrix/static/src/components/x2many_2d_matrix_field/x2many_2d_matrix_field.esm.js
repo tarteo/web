@@ -5,18 +5,12 @@ import {standardFieldProps} from "@web/views/fields/standard_field_props";
 import {registry} from "@web/core/registry";
 import {archParseBoolean} from "@web/views/utils";
 import {X2Many2DMatrixRenderer} from "@web_widget_x2many_2d_matrix/components/x2many_2d_matrix_renderer/x2many_2d_matrix_renderer.esm";
+import { _lt } from "@web/core/l10n/translation";
 
 export class X2Many2DMatrixField extends Component {
+
     setup() {
         this.activeField = this.props.record.activeFields[this.props.name];
-    }
-
-    getList() {
-        return this.props.value;
-    }
-
-    get list() {
-        return this.getList();
     }
 
     _getDefaultRecordValues() {
@@ -30,7 +24,7 @@ export class X2Many2DMatrixField extends Component {
         values[fields.x] = x;
         values[fields.y] = y;
 
-        const matchingRecords = this.list.records.filter(
+        const matchingRecords = this.props.value.records.filter(
             (record) => record.data[fields.x] === x && record.data[fields.y] === y
         );
         if (matchingRecords.length === 1) {
@@ -54,6 +48,8 @@ export class X2Many2DMatrixField extends Component {
     }
 }
 
+X2Many2DMatrixField.components = {X2Many2DMatrixRenderer};
+X2Many2DMatrixField.displayName = _lt("X2Many2DMatrixField Table");
 X2Many2DMatrixField.template = "web_widget_x2many_2d_matrix.X2Many2DMatrixField";
 X2Many2DMatrixField.props = {
     ...standardFieldProps,
@@ -63,7 +59,6 @@ X2Many2DMatrixField.props = {
     showRowTotals: Boolean,
     showColumnTotals: Boolean,
 };
-X2Many2DMatrixField.components = {X2Many2DMatrixRenderer};
 X2Many2DMatrixField.extractProps = ({attrs}) => {
     return {
         matrixFields: {
@@ -74,11 +69,11 @@ X2Many2DMatrixField.extractProps = ({attrs}) => {
         isXClickable: archParseBoolean(attrs.x_axis_clickable),
         isYClickable: archParseBoolean(attrs.y_axis_clickable),
         showRowTotals:
-            "show_row_totals" in attrs ? archParseBoolean(attrs.show_row_totals) : true,
+            "show_row_totals" in attrs ? archParseBoolean(attrs.show_row_totals) : false,
         showColumnTotals:
             "show_column_totals" in attrs
                 ? archParseBoolean(attrs.show_column_totals)
-                : true,
+                : false,
     };
 };
 

@@ -32,7 +32,7 @@
                     </td>
                     <td t-if="props.showRowTotals" class="row-total">
                         <t
-                            t-component="ValueFieldComponent"
+                            t-component="AggregateFieldComponent"
                             readonly="true"
                             value="_aggregateRow(row.value)"
                         />
@@ -44,18 +44,20 @@
                     <th />
                     <th t-foreach="columns" t-as="column" t-key="column.value">
                         <t
-                            t-component="ValueFieldComponent"
+                            t-component="AggregateFieldComponent"
                             readonly="true"
                             value="_aggregateColumn(column.value)"
                         />
                     </th>
-                    <th t-if="props.showRowTotals" class="col-total">
-                        <t
-                            t-component="ValueFieldComponent"
-                            readonly="true"
-                            value="_aggregateAll()"
-                        />
-                    </th>
+                    <t t-if="props.showRowTotals">
+                        <th class="col-total">
+                            <t
+                                t-component="AggregateFieldComponent"
+                                readonly="true"
+                                value="_aggregateAll()"
+                            />
+                        </th>
+                    </t>
                 </tr>
             </tfoot>
         </table>
